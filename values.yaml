@@ -20,6 +20,8 @@ namespaces:
 cronJob:
   # Run every 12 hours
   schedule: "0 */12 * * *"
+  # TTL for the CronJob
+  ttlSecondsAfterFinished: 600
   image:
     # GitHub Container Registry
     repository: "ghcr.io/christian-deleon/aws-ecr-secret-updater"

@@ -5,6 +5,7 @@ metadata:
   namespace: {{ .Values.namespace }}
 spec:
   schedule: {{ .Values.cronJob.schedule | quote }}
+  ttlSecondsAfterFinished: {{ .Values.cronJob.ttlSecondsAfterFinished }}
   jobTemplate:
     spec:
       template:
