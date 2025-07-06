@@ -2,11 +2,11 @@ apiVersion: v1
 entries:
   aws-ecr-secret-updater:
   - apiVersion: v2
-    created: "2025-07-06T03:17:49.453479354Z"
+    created: "2025-07-06T03:29:23.808950857Z"
     description: A Helm chart to automate ECR image pull secrets across multiple namespaces
-    digest: 93d484571de0acb3fa0fea761bea33465e712e0cddc7c57ea01a09acc2623ac9
+    digest: 5cd863c75427fb77591855635771f06843159362390a4381cda652574b07e12b
     name: aws-ecr-secret-updater
     urls:
-    - https://christian-deleon.github.io/aws-ecr-secret-updater/aws-ecr-secret-updater-0.1.0.tgz
-    version: 0.1.0
-generated: "2025-07-06T03:17:49.452602884Z"
+    - https://christian-deleon.github.io/aws-ecr-secret-updater/aws-ecr-secret-updater-0.2.0.tgz
+    version: 0.2.0
+generated: "2025-07-06T03:29:23.808053246Z"
