@@ -30,12 +30,16 @@ cronJob:
 
 # Service account configuration
 serviceAccount:
-  # Create a new service account by default
-  create: false
-  # Name of the new service account
-  name: "aws-ecr-secret-updater"
-  # Patch default service accounts in target namespaces
-  patchDefault: true
+  updater:
+    # Name of the updater service account (always created)
+    name: "aws-ecr-secret-updater"
+  namespace:
+    # Enable creation of service accounts in target namespaces
+    create: false
+    # Name of the service account in target namespaces
+    name: "aws-ecr-secret"
+    # Patch default service accounts in target namespaces
+    patchDefault: true
 
 # Name of the secret to create/update
 secretName: "aws-ecr-secret"

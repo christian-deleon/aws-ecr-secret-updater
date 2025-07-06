@@ -10,24 +10,14 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: {{ if .Values.serviceAccount.create }}{{ .Values.serviceAccount.name }}{{ else }}default{{ end }}
+          serviceAccountName: aws-ecr-secret-updater
           restartPolicy: OnFailure
           containers:
             - name: aws-ecr-secret-updater
               image: {{ .Values.cronJob.image.repository }}:{{ .Values.cronJob.image.tag }}
               command: ["/bin/sh", "/app/update-ecr-secret.sh"]
+              {{- if and .Values.aws.accessKeyId .Values.aws.secretAccessKey }}
               env:
-                - name: AWS_REGION
-                  value: {{ .Values.aws.region | quote }}
-                - name: AWS_ACCOUNT_ID
-                  value: {{ .Values.aws.accountId | quote }}
-                - name: NAMESPACES
-                  value: {{ join " " .Values.namespaces | quote }}
-                - name: SECRET_NAME
-                  value: {{ .Values.secretName | quote }}
-                - name: PATCH_DEFAULT_SA
-                  value: {{ .Values.serviceAccount.patchDefault | quote }}
-                {{- if and .Values.aws.accessKeyId .Values.aws.secretAccessKey }}
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
@@ -38,7 +28,7 @@ spec:
                     secretKeyRef:
                       name: aws-credentials
                       key: AWS_SECRET_ACCESS_KEY
-                {{- end }}
+              {{- end }}
               volumeMounts:
                 - name: update-ecr-secret
                   mountPath: /app/update-ecr-secret.sh
@@ -47,3 +37,4 @@ spec:
             - name: update-ecr-secret
               configMap:
                 name: update-ecr-secret
+                defaultMode: 0755

@@ -9,10 +9,12 @@ rules:
   - apiGroups: [""]
     resources: ["secrets"]
     verbs: ["get", "create", "update", "patch"]
-{{- if $.Values.serviceAccount.patchDefault }}
+    resourceNames: ["{{ .Values.secretName }}"]
+{{- if $.Values.serviceAccount.namespace.patchDefault }}
   - apiGroups: [""]
     resources: ["serviceaccounts"]
     verbs: ["get", "patch"]
+    resourceNames: ["{{ $.Values.serviceAccount.namespace.name }}"]
 {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
@@ -22,10 +24,18 @@ metadata:
   namespace: {{ . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ if $.Values.serviceAccount.create }}{{ $.Values.serviceAccount.name }}{{ else }}default{{ end }}
+    name: {{ $.Values.serviceAccount.updater.name }}
     namespace: {{ $.Values.namespace }}
 roleRef:
   kind: Role
   name: ecr-secret-manager
   apiGroup: rbac.authorization.k8s.io
+{{- if $.Values.serviceAccount.namespace.create }}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $.Values.serviceAccount.namespace.name }}
+  namespace: {{ . }}
+{{- end }}
 {{- end }}
