@@ -9,12 +9,24 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: v3.18.2
+
       - name: Package Helm Chart
-        run: helm package .
-      - name: Publish to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
+        run: |
+          helm package . --destination docs/
+
+      - name: Update Helm Repo Index
+        run: |
+          helm repo index docs/ --url https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}/
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
-          keep_files: true
+          publish_dir: ./docs
