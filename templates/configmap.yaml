@@ -6,7 +6,7 @@ data:
   update-ecr-secret.sh: |
     #!/bin/sh -e
 
-    NAMESPACES=({{ join " " .Values.targetNamespaces }})
+    NAMESPACES="{{ join " " .Values.targetNamespaces }}"
 
     if [ -z "$NAMESPACES" ]; then
       echo "No namespaces provided"

@@ -1,4 +1,4 @@
 apiVersion: v2
 name: aws-ecr-secret-updater
 description: A Helm chart to automate ECR image pull secrets across multiple namespaces
-version: 0.8.0
+version: 0.8.1
