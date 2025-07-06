@@ -1,20 +1,21 @@
 # Namespace where the chart is deployed (separate from target namespaces)
 namespace: aws-ecr-secret-updater
 
+# Name of the secret to create/update
+secretName: "aws-ecr-secret"
+
 # AWS configuration
 aws:
-  # AWS region for ECR
-  region: "us-east-1"
-  # AWS account ID
-  accountId: "123456789012"
-  # AWS access key ID
-  accessKeyId: ""
-  # AWS secret access key
-  secretAccessKey: ""
+  # Required: AWS region
+  region:
+  # Required: AWS account ID
+  accountId:
+  # Optional: AWS access key ID and secret access key
+  # accessKeyId: ""
+  # secretAccessKey: ""
 
 # Target namespaces to manage secrets in
-namespaces:
-  - default
+targetNamespaces: []
 
 # CronJob configuration
 cronJob:
@@ -30,16 +31,9 @@ cronJob:
 
 # Service account configuration
 serviceAccount:
-  updater:
-    # Name of the updater service account (always created)
-    name: "aws-ecr-secret-updater"
-  namespace:
-    # Enable creation of service accounts in target namespaces
-    create: false
-    # Name of the service account in target namespaces
-    name: "aws-ecr-secret"
-    # Patch default service accounts in target namespaces
-    patchDefault: true
-
-# Name of the secret to create/update
-secretName: "aws-ecr-secret"
+  # Enable creation of service accounts in target namespaces
+  create: false
+  # Name of the service account in target namespaces
+  name: "aws-ecr-secret"
+  # Patch default service accounts in target namespaces
+  patchDefault: true

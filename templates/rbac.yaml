@@ -1,41 +1,44 @@
-{{- range .Values.namespaces }}
+{{- range .Values.targetNamespaces }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: Role
 metadata:
-  name: ecr-secret-manager
+  name: {{ $.Release.Name }}
   namespace: {{ . }}
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
-    verbs: ["get", "create", "update", "patch"]
+    verbs: ["create"]
+  - apiGroups: [""]
+    resources: ["secrets"]
     resourceNames: ["{{ .Values.secretName }}"]
-{{- if $.Values.serviceAccount.namespace.patchDefault }}
+    verbs: ["get", "update", "patch"]
+{{- if $.Values.serviceAccount.patchDefault }}
   - apiGroups: [""]
     resources: ["serviceaccounts"]
     verbs: ["get", "patch"]
-    resourceNames: ["{{ $.Values.serviceAccount.namespace.name }}"]
+    resourceNames: ["{{ $.Values.serviceAccount.name }}"]
 {{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
 metadata:
-  name: ecr-secret-manager-binding
+  name: {{ $.Release.Name }}
   namespace: {{ . }}
 subjects:
   - kind: ServiceAccount
-    name: {{ $.Values.serviceAccount.updater.name }}
+    name: {{ $.Release.Name }}
     namespace: {{ $.Values.namespace }}
 roleRef:
   kind: Role
-  name: ecr-secret-manager
+  name: {{ $.Release.Name }}
   apiGroup: rbac.authorization.k8s.io
-{{- if $.Values.serviceAccount.namespace.create }}
+{{- if $.Values.serviceAccount.create }}
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: {{ $.Values.serviceAccount.namespace.name }}
+  name: {{ $.Values.serviceAccount.name }}
   namespace: {{ . }}
 {{- end }}
 {{- end }}

@@ -1,8 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: aws-ecr-secret-updater
-  namespace: {{ .Values.namespace }}
+  name: {{ $.Release.Name }}
 spec:
   schedule: {{ .Values.cronJob.schedule | quote }}
   ttlSecondsAfterFinished: {{ .Values.cronJob.ttlSecondsAfterFinished }}
@@ -10,7 +9,7 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: aws-ecr-secret-updater
+          serviceAccountName: {{ $.Release.Name }}
           restartPolicy: OnFailure
           containers:
             - name: aws-ecr-secret-updater
@@ -21,20 +20,20 @@ spec:
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
-                      name: aws-credentials
+                      name: {{ $.Release.Name }}-aws-credentials
                       key: AWS_ACCESS_KEY_ID
                 - name: AWS_SECRET_ACCESS_KEY
                   valueFrom:
                     secretKeyRef:
-                      name: aws-credentials
+                      name: {{ $.Release.Name }}-aws-credentials
                       key: AWS_SECRET_ACCESS_KEY
               {{- end }}
               volumeMounts:
-                - name: update-ecr-secret
+                - name: script
                   mountPath: /app/update-ecr-secret.sh
                   subPath: update-ecr-secret.sh
           volumes:
-            - name: update-ecr-secret
+            - name: script
               configMap:
-                name: update-ecr-secret
+                name: {{ $.Release.Name }}-script
                 defaultMode: 0755

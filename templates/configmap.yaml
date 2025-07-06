@@ -1,16 +1,24 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: update-ecr-secret
+  name: {{ $.Release.Name }}-script
 data:
   update-ecr-secret.sh: |
     #!/bin/sh -e
 
-    REGION="{{ .Values.aws.region }}"
-    REGISTRY="{{ .Values.aws.accountId }}.dkr.ecr.${REGION}.amazonaws.com"
-    PASSWORD=$(aws ecr get-login-password --region $REGION)
+    NAMESPACES=({{ join " " .Values.targetNamespaces }})
 
-    NAMESPACES=({{ join " " .Values.namespaces }})
+    if [ -z "$NAMESPACES" ]; then
+      echo "No namespaces provided"
+      exit 1
+    fi
+
+    ACCOUNT_ID="{{ required "aws.accountId is required" .Values.aws.accountId }}"
+    REGION="{{ required "aws.region is required" .Values.aws.region }}"
+    REGISTRY="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
+    SECRET_NAME="{{ .Values.secretName }}"
+
+    PASSWORD=$(aws ecr get-login-password --region $REGION)
 
     for ns in $NAMESPACES; do
       echo "Updating secret in namespace: $ns"
