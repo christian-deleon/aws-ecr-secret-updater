@@ -6,9 +6,14 @@ metadata:
   name: ecr-secret-manager
   namespace: {{ . }}
 rules:
-- apiGroups: [""]
-  resources: ["secrets"]
-  verbs: ["create", "update", "patch"]
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["create", "update", "patch"]
+{{- if $.Values.patchDefaultServiceAccount }}
+  - apiGroups: [""]
+    resources: ["serviceaccounts"]
+    verbs: ["get", "patch"]
+{{- end }}
 ---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: RoleBinding
@@ -16,9 +21,9 @@ metadata:
   name: ecr-secret-manager-binding
   namespace: {{ . }}
 subjects:
-- kind: ServiceAccount
-  name: {{ if $.Values.serviceAccount.create }}{{ $.Values.serviceAccount.name }}{{ else }}default{{ end }}
-  namespace: {{ $.Values.namespace }}
+  - kind: ServiceAccount
+    name: {{ if $.Values.serviceAccount.create }}{{ $.Values.serviceAccount.name }}{{ else }}default{{ end }}
+    namespace: {{ $.Values.namespace }}
 roleRef:
   kind: Role
   name: ecr-secret-manager
