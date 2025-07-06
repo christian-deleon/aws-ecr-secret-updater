@@ -11,7 +11,7 @@ rules:
     verbs: ["create"]
   - apiGroups: [""]
     resources: ["secrets"]
-    resourceNames: ["{{ .Values.secretName }}"]
+    resourceNames: ["{{ $.Values.secretName }}"]
     verbs: ["get", "update", "patch"]
 {{- if $.Values.serviceAccount.patchDefault }}
   - apiGroups: [""]

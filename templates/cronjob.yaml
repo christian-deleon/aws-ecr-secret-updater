@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: CronJob
 metadata:
-  name: {{ $.Release.Name }}
+  name: {{ .Release.Name }}
 spec:
   schedule: {{ .Values.cronJob.schedule | quote }}
   ttlSecondsAfterFinished: {{ .Values.cronJob.ttlSecondsAfterFinished }}
@@ -9,7 +9,7 @@ spec:
     spec:
       template:
         spec:
-          serviceAccountName: {{ $.Release.Name }}
+          serviceAccountName: {{ .Release.Name }}
           restartPolicy: OnFailure
           containers:
             - name: aws-ecr-secret-updater
@@ -35,5 +35,5 @@ spec:
           volumes:
             - name: script
               configMap:
-                name: {{ $.Release.Name }}-script
+                name: {{ .Release.Name }}-script
                 defaultMode: 0755

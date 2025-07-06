@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ $.Release.Name }}-script
+  name: {{ .Release.Name }}-script
 data:
   update-ecr-secret.sh: |
     #!/bin/sh -e
@@ -13,10 +13,10 @@ data:
       exit 1
     fi
 
-    ACCOUNT_ID="{{ required "aws.accountId is required" .Values.aws.accountId }}"
-    REGION="{{ required "aws.region is required" .Values.aws.region }}"
+    ACCOUNT_ID="{{ required "aws.accountId is required" $.Values.aws.accountId }}"
+    REGION="{{ required "aws.region is required" $.Values.aws.region }}"
     REGISTRY="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
-    SECRET_NAME="{{ .Values.secretName }}"
+    SECRET_NAME="{{ $.Values.secretName }}"
 
     PASSWORD=$(aws ecr get-login-password --region $REGION)
 
