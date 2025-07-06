@@ -39,3 +39,11 @@ spec:
                       name: aws-credentials
                       key: AWS_SECRET_ACCESS_KEY
                 {{- end }}
+              volumeMounts:
+                - name: update-ecr-secret
+                  mountPath: /app/update-ecr-secret.sh
+                  subPath: update-ecr-secret.sh
+          volumes:
+            - name: update-ecr-secret
+              configMap:
+                name: update-ecr-secret

@@ -24,9 +24,9 @@ cronJob:
   ttlSecondsAfterFinished: 600
   image:
     # GitHub Container Registry
-    repository: "ghcr.io/christian-deleon/aws-ecr-secret-updater"
+    repository: "ghcr.io/christian-deleon/awscli-kubectl"
     # Default tag
-    tag: "0.3.0"
+    tag: "0.1.0"
 
 # Service account configuration
 serviceAccount:
