@@ -3,10 +3,14 @@ namespace: aws-ecr-secret-updater
 
 # AWS configuration
 aws:
-  region: "us-east-1"         # AWS region for ECR
-  accountId: "123456789012"   # AWS account ID (example value; replace with your own)
-  accessKeyId: ""             # AWS access key ID (required; no default for security)
-  secretAccessKey: ""         # AWS secret access key (required; no default for security)
+  # AWS region for ECR
+  region: "us-east-1"
+  # AWS account ID
+  accountId: "123456789012"
+  # AWS access key ID
+  accessKeyId: ""
+  # AWS secret access key
+  secretAccessKey: ""
 
 # Target namespaces to manage secrets in
 namespaces:
@@ -14,16 +18,22 @@ namespaces:
 
 # CronJob configuration
 cronJob:
-  schedule: "0 */12 * * *"    # Run every 12 hours
+  # Run every 12 hours
+  schedule: "0 */12 * * *"
   image:
-    repository: "ghcr.io/yourusername/aws-ecr-secret-updater"  # GitHub Container Registry
-    tag: "latest"                                              # Default tag (can be overridden)
+    # GitHub Container Registry
+    repository: "ghcr.io/christian-deleon/aws-ecr-secret-updater"
+    # Default tag
+    tag: "latest"
 
 # Service account configuration
 serviceAccount:
-  create: true                    # Create a new service account by default
-  name: "aws-ecr-secret-updater"  # Name of the new service account
-  patchDefault: true              # Patch default service accounts in target namespaces
+  # Create a new service account by default
+  create: false
+  # Name of the new service account
+  name: "aws-ecr-secret-updater"
+  # Patch default service accounts in target namespaces
+  patchDefault: true
 
 # Name of the secret to create/update
-secretName: "my-ecr-secret"   # Descriptive default name
+secretName: "aws-ecr-secret"
