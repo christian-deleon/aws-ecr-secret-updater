@@ -8,8 +8,8 @@ metadata:
 rules:
   - apiGroups: [""]
     resources: ["secrets"]
-    verbs: ["create", "update", "patch"]
-{{- if $.Values.patchDefaultServiceAccount }}
+    verbs: ["get", "create", "update", "patch"]
+{{- if $.Values.serviceAccount.patchDefault }}
   - apiGroups: [""]
     resources: ["serviceaccounts"]
     verbs: ["get", "patch"]
