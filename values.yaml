@@ -10,9 +10,18 @@ aws:
   region:
   # Required: AWS account ID
   accountId:
-  # Optional: AWS access key ID and secret access key
+  # ----------
+  # Optional: Use AWS credentials from a secret
+  # useSecret: false
+  # ----------
+  # Optional: AWS access key ID and secret access key - must enable aws.useSecret
   # accessKeyId: ""
   # secretAccessKey: ""
+  # ----------
+  # Optional: You can specify a secret to use for the AWS credentials - must enable aws.useSecret
+  # secretName: "aws-credentials"
+  # secretKeyId: "AWS_ACCESS_KEY_ID"
+  # secretAccessKey: "AWS_SECRET_ACCESS_KEY"
 
 # Target namespaces to manage secrets in
 targetNamespaces: []
