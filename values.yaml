@@ -42,4 +42,4 @@ serviceAccount:
   # Name of the service account in target namespaces
   name: "aws-ecr-secret"
   # Patch default service accounts in target namespaces
-  patchDefault: true
+  patchDefault: false
