@@ -11,8 +11,8 @@ aws:
   # Required: AWS account ID
   accountId:
   # ----------
-  # Optional: Use AWS credentials from a secret
-  # useSecret: false
+  # Enable to use AWS credentials from a secret instead of IAM Profile
+  useSecret: false
   # ----------
   # Optional: AWS access key ID and secret access key - must enable aws.useSecret
   # accessKeyId: ""
