@@ -20,12 +20,20 @@ spec:
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
+                      {{- if .Values.aws.secretName }}
+                      name: {{ .Values.aws.secretName }}
+                      {{- else }}
                       name: {{ $.Release.Name }}-aws-credentials
+                      {{- end }}
                       key: AWS_ACCESS_KEY_ID
                 - name: AWS_SECRET_ACCESS_KEY
                   valueFrom:
                     secretKeyRef:
+                      {{- if .Values.aws.secretName }}
+                      name: {{ .Values.aws.secretName }}
+                      {{- else }}
                       name: {{ $.Release.Name }}-aws-credentials
+                      {{- end }}
                       key: AWS_SECRET_ACCESS_KEY
               {{- end }}
               volumeMounts:
