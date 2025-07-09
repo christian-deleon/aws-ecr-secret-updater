@@ -15,8 +15,18 @@ spec:
             - name: aws-ecr-secret-updater
               image: {{ .Values.cronJob.image.repository }}:{{ .Values.cronJob.image.tag }}
               command: ["/bin/sh", "/app/update-ecr-secret.sh"]
-              {{- if .Values.aws.accessKey.enabled }}
               env:
+                - name: AWS_ACCOUNT_ID
+                  value: {{ .Values.aws.accountId }}
+                - name: AWS_REGION
+                  value: {{ .Values.aws.region }}
+                - name: SECRET_NAME
+                  value: {{ .Values.secretName }}
+                - name: NAMESPACES
+                  value: {{ join " " .Values.targetNamespaces }}
+                - name: PATCH_DEFAULT_SA
+                  value: {{ .Values.patchDefaultSa }}
+                {{- if .Values.aws.accessKey.enabled }}
                 - name: AWS_ACCESS_KEY_ID
                   valueFrom:
                     secretKeyRef:
@@ -27,7 +37,7 @@ spec:
                     secretKeyRef:
                       name: {{ .Values.aws.accessKey.secretName }}
                       key: {{ .Values.aws.accessKey.accessKey }}
-              {{- end }}
+                {{- end }}
               volumeMounts:
                 - name: script
                   mountPath: /app/update-ecr-secret.sh

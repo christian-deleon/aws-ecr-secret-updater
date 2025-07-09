@@ -6,19 +6,18 @@ data:
   update-ecr-secret.sh: |
     #!/bin/sh -e
 
-    NAMESPACES="{{ join " " .Values.targetNamespaces }}"
-
     if [ -z "$NAMESPACES" ]; then
       echo "No namespaces provided"
       exit 1
     fi
 
-    ACCOUNT_ID="{{ required "aws.accountId is required" $.Values.aws.accountId }}"
-    REGION="{{ required "aws.region is required" $.Values.aws.region }}"
-    REGISTRY="${ACCOUNT_ID}.dkr.ecr.${REGION}.amazonaws.com"
-    SECRET_NAME="{{ $.Values.secretName }}"
+    REGISTRY="${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com"
+    PASSWORD=$(aws ecr get-login-password --region $AWS_REGION)
 
-    PASSWORD=$(aws ecr get-login-password --region $REGION)
+    if [ -z "$PASSWORD" ]; then
+      echo "Failed to get login password"
+      exit 1
+    fi
 
     for ns in $NAMESPACES; do
       echo "Updating secret in namespace: $ns"
