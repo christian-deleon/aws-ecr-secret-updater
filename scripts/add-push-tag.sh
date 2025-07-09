@@ -5,15 +5,15 @@ SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 PROJECT_ROOT="$( dirname "$SCRIPT_DIR" )"
 
 
-echo "Enter the new Helm chart version:"
+echo -n "Enter the new Helm chart version: "
 read new_version
 
 new_version=${new_version#v}
 tag="v$new_version"
 
-# Validate the version with the user
-echo "Is version $new_version correct? (y/n)"
+echo -n "Is version $new_version correct? (y/n): "
 read confirmation
+
 if [ "$confirmation" != "y" ] && [ "$confirmation" != "Y" ]; then
     echo "Version update cancelled."
     exit 1
