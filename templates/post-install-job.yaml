@@ -1,0 +1,49 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: {{ .Release.Name }}-post-install
+  annotations:
+    "helm.sh/hook": post-install
+    "helm.sh/hook-weight": "-5"
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  template:
+    spec:
+      serviceAccountName: {{ .Release.Name }}
+      restartPolicy: OnFailure
+      containers:
+        - name: aws-ecr-secret-updater-post-install
+          image: {{ .Values.cronJob.image.repository }}:{{ .Values.cronJob.image.tag }}
+          command: ["/bin/sh", "/app/update-ecr-secret.sh"]
+          env:
+            - name: AWS_ACCOUNT_ID
+              value: {{ .Values.aws.accountId | quote }}
+            - name: AWS_REGION
+              value: {{ .Values.aws.region }}
+            - name: SECRET_NAME
+              value: {{ .Values.secretName }}
+            - name: NAMESPACES
+              value: {{ join " " .Values.targetNamespaces }}
+            - name: PATCH_DEFAULT_SA
+              value: {{ .Values.serviceAccount.patchDefault | quote }}
+            {{- if .Values.aws.accessKey.enabled }}
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.aws.accessKey.secretName }}
+                  key: {{ .Values.aws.accessKey.keyId }}
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.aws.accessKey.secretName }}
+                  key: {{ .Values.aws.accessKey.accessKey }}
+            {{- end }}
+          volumeMounts:
+            - name: script
+              mountPath: /app/update-ecr-secret.sh
+              subPath: update-ecr-secret.sh
+      volumes:
+        - name: script
+          configMap:
+            name: {{ .Release.Name }}-script
+            defaultMode: 0755
