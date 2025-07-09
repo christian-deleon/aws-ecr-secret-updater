@@ -17,7 +17,7 @@ spec:
               command: ["/bin/sh", "/app/update-ecr-secret.sh"]
               env:
                 - name: AWS_ACCOUNT_ID
-                  value: {{ .Values.aws.accountId }}
+                  value: {{ .Values.aws.accountId | quote }}
                 - name: AWS_REGION
                   value: {{ .Values.aws.region }}
                 - name: SECRET_NAME
