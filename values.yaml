@@ -23,6 +23,9 @@ aws:
 # Target namespaces to manage secrets in
 targetNamespaces: []
 
+# Namespace creation configuration
+createTargetNamespaces: false
+
 # CronJob configuration
 cronJob:
   # Run every 12 hours
