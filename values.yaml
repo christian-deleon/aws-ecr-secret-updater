@@ -23,7 +23,9 @@ aws:
 # Target namespaces to manage secrets in
 targetNamespaces: []
 
-# Namespace creation configuration
+# Target namespaces creation configuration
+# When enabled, creates target namespaces. These namespaces will NOT be deleted
+# when the Helm release is uninstalled (they are kept for safety).
 createTargetNamespaces: false
 
 # CronJob configuration

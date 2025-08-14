@@ -8,5 +8,7 @@ metadata:
   labels:
     {{- include "aws-ecr-secret-updater.labels" $ | nindent 4 }}
     app.kubernetes.io/component: namespace
+  annotations:
+    helm.sh/resource-policy: keep
 {{- end }}
 {{- end }}
