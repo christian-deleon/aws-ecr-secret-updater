@@ -1,0 +1,12 @@
+{{- if .Values.createTargetNamespaces }}
+{{- range .Values.targetNamespaces }}
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ . }}
+  labels:
+    {{- include "aws-ecr-secret-updater.labels" $ | nindent 4 }}
+    app.kubernetes.io/component: namespace
+{{- end }}
+{{- end }}

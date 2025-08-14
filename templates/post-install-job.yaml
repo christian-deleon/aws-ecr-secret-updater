@@ -26,8 +26,6 @@ spec:
               value: {{ join " " .Values.targetNamespaces }}
             - name: PATCH_DEFAULT_SA
               value: {{ .Values.serviceAccount.patchDefault | quote }}
-            - name: CREATE_TARGET_NAMESPACES
-              value: {{ .Values.createTargetNamespaces | quote }}
             {{- if .Values.aws.accessKey.enabled }}
             - name: AWS_ACCESS_KEY_ID
               valueFrom:

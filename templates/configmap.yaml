@@ -22,16 +22,6 @@ data:
     for ns in $NAMESPACES; do
       echo "Processing namespace: $ns"
 
-      # Create namespace if enabled and it doesn't exist
-      if [ "$CREATE_TARGET_NAMESPACES" = "true" ]; then
-        if ! kubectl get namespace $ns >/dev/null 2>&1; then
-          echo "Creating namespace: $ns"
-          kubectl create namespace $ns
-        else
-          echo "Namespace $ns already exists"
-        fi
-      fi
-
       echo "Updating secret in namespace: $ns"
 
       # Create or update the secret
