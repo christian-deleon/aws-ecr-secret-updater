@@ -4,9 +4,9 @@ metadata:
   name: {{ .Release.Name }}
 spec:
   schedule: {{ .Values.cronJob.schedule | quote }}
-  ttlSecondsAfterFinished: {{ .Values.cronJob.ttlSecondsAfterFinished }}
   jobTemplate:
     spec:
+      ttlSecondsAfterFinished: {{ .Values.cronJob.ttlSecondsAfterFinished }}
       template:
         spec:
           serviceAccountName: {{ .Release.Name }}
